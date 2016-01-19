@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // Dumb component
-export default class AboutPage extends Component {
+export default class Page extends Component {
     createMarkup(html) {
         return {
             __html: html
@@ -14,7 +14,7 @@ export default class AboutPage extends Component {
 
         return (
             <div className="blog-post">
-                <h2 className="blog-post-title">{page.title.rendered}</h2>
+                <h1 className="blog-post-title">{page.title.rendered}</h1>
                 <div dangerouslySetInnerHTML={this.createMarkup(page.content.rendered)} />
             </div>
         );

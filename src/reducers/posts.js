@@ -1,4 +1,4 @@
-import { RECEIVE_POSTS } from '../actions';
+import { RECEIVE_POSTS } from '../actions/index';
 
 const defaultState = {
     posts: [],

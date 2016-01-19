@@ -4,11 +4,17 @@ import { fetchPosts } from '../actions';
 import { Link } from 'react-router';
 import Post from '../components/Post';
 
+
+@connect (state => ({
+    posts: state.posts.posts,
+    pageNum: state.posts.pageNum,
+    totalPages: state.posts.totalPages
+}),{fetchPosts})
+
 // Smart component
-class PostsContainer extends Component {
+export default class PostsContainer extends Component {
     componentWillMount() {
         const { fetchPosts, pageNum = 1 } = this.props;
-
         fetchPosts(pageNum);
     }
 
@@ -19,16 +25,13 @@ class PostsContainer extends Component {
     }
 
     handlePaginationClick(pageNum) {
-        console.log('pagination clicked');
-
         scroll(0, 0);
-
-        this.props.fetchPosts(pageNum);
     }
 
     buildPagination(pageNum, totalPages) {
         const prevText = "Previous";
         const nextText = "Next";
+        const base = "/posts";
 
         let prevLink = {
             link: <a>{prevText}</a>,
@@ -36,19 +39,21 @@ class PostsContainer extends Component {
         };
 
         let nextLink = {
-            link: <Link to={"/" + (pageNum + 1)} onClick={() => this.handlePaginationClick(pageNum + 1)}>{nextText}</Link>,
+            link: <Link to={base + "/" + (pageNum + 1)} onClick={() => this.handlePaginationClick(pageNum + 1)}>{nextText}</Link>,
             enabled: true
         };
 
         if (pageNum > 1 && pageNum < totalPages) {
-            prevLink.link = <Link to={"/" + (pageNum - 1)} onClick={() => this.handlePaginationClick(pageNum - 1)}>{prevText}</Link>;
+            prevLink.link = <Link to={base + "/" + (pageNum - 1)} onClick={() => this.handlePaginationClick(pageNum - 1)}>{prevText}</Link>;
             prevLink.enabled = true;
         } else if (pageNum == totalPages) {
             nextLink.link = <a>{nextText}</a>;
             nextLink.enabled = false;
+            if (totalPages > 1) {
+                prevLink.link = <Link to={base + "/" + (pageNum - 1)} onClick={() => this.handlePaginationClick(pageNum - 1)}>{prevText}</Link>;
+                prevLink.enabled = true;
+            }
 
-            prevLink.link = <Link to={"/" + (pageNum - 1)} onClick={() => this.handlePaginationClick(pageNum - 1)}>{prevText}</Link>;
-            prevLink.enabled = true;
         }
 
         return (
@@ -71,7 +76,6 @@ class PostsContainer extends Component {
         const { posts, totalPages, pageNum = 1 } = this.props;
 
         console.log('PostsContainer:render');
-
         return (
             <div className="article-listing">
 
@@ -83,16 +87,3 @@ class PostsContainer extends Component {
         );
     }
 }
-
-function mapStateToProps(state) {
-    return {
-        posts: state.posts.posts,
-        pageNum: state.posts.pageNum,
-        totalPages: state.posts.totalPages
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    { fetchPosts }
-)(PostsContainer);

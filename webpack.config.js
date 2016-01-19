@@ -1,13 +1,10 @@
 var path = require('path');
 var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     devtool: 'source-map',
     entry: [
-        'webpack-dev-server/client?http://localhost:3000',
-        'webpack/hot/only-dev-server',
         './src/index'
     ],
     output: {
@@ -16,12 +13,6 @@ module.exports = {
         publicPath: '/'
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            template: './src/index.template.html',
-            inject: true
-        }),
         new webpack.NoErrorsPlugin(),
         new ExtractTextPlugin("style.css", {
             allChunks: true
@@ -31,9 +22,10 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                loaders: ['react-hot', 'babel'],
+                loader: 'babel',
                 exclude: /node_modules/,
-                include: __dirname
+                include: __dirname,
+                query: {stage: 0}
             }, {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract("style-loader", "css-loader")

@@ -7,9 +7,10 @@ import configureStore from './store/configureStore';
 import LexiTheme from './containers/LexiTheme';
 import PostsContainer from './containers/PostsContainer';
 import PostContainer from './containers/PostContainer';
-import AboutPageContainer from './containers/AboutPageContainer';
+import PageContainer from './containers/PageContainer';
 import '../sass/bootstrap.css';
 import '../sass/bootstrap-blog.css';
+import "react-progress-2/main.css";
 
 const history = new createBrowserHistory();
 const store = configureStore();
@@ -20,12 +21,11 @@ ReactDOM.render(
         <Router history={history}>
             <Route path="/" component={LexiTheme}>
                 <IndexRoute component={PostsContainer} />
-                <Route path=":pageNum" component={PostsContainer} />
-                <Route path="about" component={AboutPageContainer} />
-                <Route path=":year/:month/:name" component={PostContainer} />
+                <Route path=":pageName" component={PageContainer} />
+                <Route path="posts/:pageNum" component={PostsContainer} />
+                <Route path=":year/:month/:day/:postName/" component={PostContainer} />
             </Route>
         </Router>
     </Provider>,
     rootElement
 );
-
