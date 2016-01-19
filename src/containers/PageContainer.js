@@ -24,8 +24,6 @@ export default class PageContainer extends Component {
 
     render() {
         const page = this.props.pages[this.props.params.pageName];
-
-        console.log(page);
         if (!page)
             return (<div></div>);
         else if (page.isFetching)

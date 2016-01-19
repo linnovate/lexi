@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import { WP_API_URL } from '../wp-url';
 
-export const REQUEST_PAGE = 'REQUEST_POSTS';
+export const REQUEST_PAGE = 'REQUEST_PAGE';
 export const RECEIVE_PAGE = 'RECEIVE_PAGE';
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
 export const RECEIVE_POST = 'RECEIVE_POST';
@@ -26,8 +26,10 @@ function requestPage(pageName) {
 }
 function requestPosts(pageNum) {
     return {
-        type: REQUEST_POST,
-        pageNum: pageNum
+        type: REQUEST_POSTS,
+        payload: {
+            pageNum: pageNum
+        }
     }
 }
 
@@ -61,6 +63,7 @@ function shouldFetchPage(state, pageName) {
 
 export function fetchPosts(pageNum = 1) {
     return function (dispatch) {
+        dispatch(requestPosts(pageNum));
         return fetch(WP_API_URL + '/posts?filter[paged]=' + pageNum + '&filter[posts_per_page]=' + POSTS_PER_PAGE)
             .then(response =>
                 Promise.all([response.headers.get('X-WP-TotalPages'), response.json()])

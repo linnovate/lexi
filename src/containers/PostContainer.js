@@ -8,8 +8,7 @@ import Spinner from 'react-spinkit';
 
 export default class PostContainer extends Component {
     componentWillMount() {
-        const { fetchPost } = this.props;
-        fetchPost(this.props.params.postName);
+        this.props.fetchPost(this.props.params.postName);
     }
 
     render() {
