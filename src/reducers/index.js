@@ -1,4 +1,6 @@
 import { combineReducers } from 'redux';
+import {reducer as formReducer} from 'redux-form';
+
 import page from './page';
 import posts from './posts';
 import post from './post';
@@ -7,7 +9,8 @@ import post from './post';
 const rootReducer = combineReducers({
     page,
     post,
-    posts
+    posts,
+    form: formReducer
 });
 
 export default rootReducer;

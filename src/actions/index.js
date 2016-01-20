@@ -8,6 +8,40 @@ export const RECEIVE_POST = 'RECEIVE_POST';
 export const REQUEST_POSTS = 'REQUEST_POSTS';
 export const REQUEST_POST = 'REQUEST_POST';
 
+export const COMMENT_ADD_REQUEST = 'COMMENT_SUBMIT_REQUEST';
+export const COMMENT_ADD_SUCCESS = 'COMMENT_SUBMIT_SUCCESS';
+export const COMMENT_ADD_FAILED = 'COMMENT_SUBMIT_FAILED';
+
+const POSTS_PER_PAGE = 10;
+
+function commentAddRequest(comment) {
+    return {
+        type: COMMENT_ADD_REQUEST,
+        payload: {
+            comment: comment
+        }
+    }
+}
+
+function commentAddSuccess(comment) {
+    return {
+        type: COMMENT_ADD_SUCCESS,
+        payload: {
+            comment: comment
+        }
+    }
+}
+
+function commentAddFailed(comment, error) {
+    return {
+        type: COMMENT_ADD_FAILED,
+        payload: {
+            comment: comment,
+            error: error
+        }
+    }
+}
+
 function requestPost(postName) {
     return {
         type: REQUEST_POST,
@@ -33,8 +67,6 @@ function requestPosts(pageNum) {
     }
 }
 
-const POSTS_PER_PAGE = 10;
-
 function receivePage(pageName, pageData) {
     return {
         type: RECEIVE_PAGE,
@@ -45,6 +77,24 @@ function receivePage(pageName, pageData) {
     };
 }
 
+function receivePosts(pageNum, totalPages, posts) {
+    return {
+        type: RECEIVE_POSTS,
+        payload: {
+            pageNum: pageNum,
+            totalPages: totalPages,
+            posts: posts
+        }
+    };
+}
+function receivePost(post) {
+    return {
+        type: RECEIVE_POST,
+        payload: {
+            post: post
+        }
+    };
+}
 export function fetchPageIfNeeded(pageName) {
     return function (dispatch, getState) {
         if (shouldFetchPage(getState(), pageName)) {
@@ -74,17 +124,6 @@ export function fetchPosts(pageNum = 1) {
     }
 }
 
-function receivePosts(pageNum, totalPages, posts) {
-    return {
-        type: RECEIVE_POSTS,
-        payload: {
-            pageNum: pageNum,
-            totalPages: totalPages,
-            posts: posts
-        }
-    };
-}
-
 export function fetchPost(postName) {
     return dispatch => {
         dispatch(requestPost(postName));
@@ -95,11 +134,29 @@ export function fetchPost(postName) {
     }
 }
 
-function receivePost(post) {
-    return {
-        type: RECEIVE_POST,
-        payload: {
-            post: post
-        }
-    };
+export function addComment(comment) {
+    console.log(comment);
+    return dispatch => {
+        dispatch(commentAddRequest(comment));
+        return fetch(WP_API_URL + '/comments', {
+            method: 'POST',
+            body: JSON.stringify(comment)
+        })
+            .then(response => response.json())
+            .then(posts => dispatch(commentAddSuccess(comment)))
+            .catch(error => {
+                const response = error.response;
+                if (response === undefined) {
+                    dispatch(commentAddFailed(comment, error));
+                } else {
+                    response.json()
+                        .then(json => {
+                            error.status = response.status;
+                            error.statusText = response.statusText;
+                            error.message = json.message;
+                            dispatch(commentAddFailed(comment, error));
+                        });
+                }
+            });
+    }
 }
