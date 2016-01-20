@@ -32,7 +32,8 @@ export default class CommentForm extends Component {
         fields: PropTypes.object.isRequired,
         handleSubmit: PropTypes.func.isRequired,
         resetForm: PropTypes.func.isRequired,
-        submitting: PropTypes.bool.isRequired
+        submitting: PropTypes.bool.isRequired,
+        dirty: PropTypes.bool.isRequired
     };
 
     render() {
@@ -42,20 +43,19 @@ export default class CommentForm extends Component {
             resetForm,
             submitting,
             } = this.props;
-        fields.comment_post_ID = this.props.comment_post_ID;
+
         return (
             <form onSubmit={handleSubmit}>
-                <input type="hidden" name="comment_post_ID" value="123" {...comment_post_ID}/>
-                <fieldset className="form-group">
+                <fieldset className={'form-group' + (comment_author.touched && comment_author.error ? ' has-error' : '')}>
                     <input required className="form-control" type="text" placeholder="First Name" {...comment_author}/>
                     {comment_author.touched && comment_author.error && <div className="">{comment_author.error}</div>}
                 </fieldset>
-                <fieldset className="form-group">
+                <fieldset className={'form-group' + (comment_author_email.touched && comment_author_email.error ? ' has-error' : '')}>
                     <input required className="form-control" type="email"
                            placeholder="Email" {...comment_author_email}/>
                     {comment_author_email.touched && comment_author_email.error && <div className="">{comment_author_email.error}</div>}
                 </fieldset>
-                <fieldset className="form-group">
+                <fieldset className={'form-group' + (comment_content.touched && comment_content.error ? ' has-error' : '')}>
                     <textarea placeholder="Your comment" className="form-control" {...comment_content}
                               value={comment_content.value || ''}/>
                     {comment_content.touched && comment_content.error && <div className="">{comment_content.error}</div>}

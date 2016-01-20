@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { WP_HOME_URL } from '../wp-url';
+import { WP_HOME_URL } from '../wp-data';
 
 // Dumb component
 export default class Post extends Component {

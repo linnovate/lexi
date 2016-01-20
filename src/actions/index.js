@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import { WP_API_URL } from '../wp-url';
+import { WP_API_URL } from '../wp-data';
 
 export const REQUEST_PAGE = 'REQUEST_PAGE';
 export const RECEIVE_PAGE = 'RECEIVE_PAGE';
@@ -18,16 +18,19 @@ function commentAddRequest(comment) {
     return {
         type: COMMENT_ADD_REQUEST,
         payload: {
-            comment: comment
+            comment: comment,
+            isFetching: true
         }
     }
 }
 
 function commentAddSuccess(comment) {
+    alert("ok");
     return {
         type: COMMENT_ADD_SUCCESS,
         payload: {
-            comment: comment
+            comment: comment,
+            isFetching: false
         }
     }
 }
@@ -37,7 +40,8 @@ function commentAddFailed(comment, error) {
         type: COMMENT_ADD_FAILED,
         payload: {
             comment: comment,
-            error: error
+            error: error,
+            isFetching: false
         }
     }
 }
@@ -134,27 +138,26 @@ export function fetchPost(postName) {
     }
 }
 
-export function addComment(comment) {
-    console.log(comment);
+export function addComment(commentData) {
     return dispatch => {
-        dispatch(commentAddRequest(comment));
-        return fetch(WP_API_URL + '/comments', {
+        dispatch(commentAddRequest(commentData));
+        return fetch(WP_API_URL + '/comments',{
             method: 'POST',
-            body: JSON.stringify(comment)
+            body: JSON.stringify(commentData)
         })
             .then(response => response.json())
-            .then(posts => dispatch(commentAddSuccess(comment)))
+            .then(comment => dispatch(commentAddSuccess(comment)))
             .catch(error => {
                 const response = error.response;
                 if (response === undefined) {
-                    dispatch(commentAddFailed(comment, error));
+                    dispatch(commentAddFailed(commentData, error));
                 } else {
                     response.json()
                         .then(json => {
                             error.status = response.status;
                             error.statusText = response.statusText;
                             error.message = json.message;
-                            dispatch(commentAddFailed(comment, error));
+                            dispatch(commentAddFailed(commentData, error));
                         });
                 }
             });
