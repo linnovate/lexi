@@ -5,17 +5,12 @@ let defaultState = {
     isFetching: false
 };
 
-export default function comment(state = defaultState, action) {
+export default (state = defaultState, action) => {
     switch(action.type) {
         case COMMENT_ADD_REQUEST:
-            return Object.assign({}, state, action.payload);
-
         case COMMENT_ADD_SUCCESS:
-            return Object.assign({}, state, action.payload);
-
         case COMMENT_ADD_FAILED:
             return Object.assign({}, state, action.payload);
-
         default:
             return state;
     }

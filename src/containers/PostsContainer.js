@@ -73,11 +73,9 @@ export default class PostsContainer extends Component {
         return (
             <nav>
                 <ul className="pager">
-                    {[prevLink, nextLink].map((link, index) =>
-                        <li key={index} className={link.enabled ? "" : "disabled"}>
-                            {link.link}
-                        </li>
-                    )}
+                    <li key="prevLink" className={prevLink.enabled ? "" : "disabled"}>{prevLink.link}</li>
+                    {" "}
+                    <li key="nextLink" className={nextLink.enabled ? "" : "disabled"}>{nextLink.link}</li>
                 </ul>
             </nav>
         );
@@ -87,7 +85,7 @@ export default class PostsContainer extends Component {
         const { posts, totalPages, isFetching, pageNum = 1 } = this.props;
         return (
             isFetching
-                ? <Spinner spinnerName='three-bounce' noFadeIn style={{position: 'fixed', top: '50%', left: '40%'}}/>
+                ? <Spinner spinnerName='three-bounce' style={{position: 'fixed', top: '50%', left: '40%'}}/>
                 :
                 <div className="article-listing">
                     {this.buildPosts(posts)}

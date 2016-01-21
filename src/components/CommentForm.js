@@ -47,23 +47,23 @@ export default class CommentForm extends Component {
             <form onSubmit={handleSubmit}>
                 <fieldset className={'form-group' + (author_name.touched && author_name.error ? ' has-error' : '')}>
                     <input required className="form-control" type="text" placeholder="First Name" {...author_name}/>
-                    {author_name.touched && author_name.error && <small>{author_name.error}</small>}
+                    {author_name.touched && author_name.error && <small className="text-danger">{author_name.error}</small>}
                 </fieldset>
                 <fieldset className={'form-group' + (author_email.touched && author_email.error ? ' has-error' : '')}>
                     <input required className="form-control" type="email"
                            placeholder="Email" {...author_email}/>
-                    {author_email.touched && author_email.error && <small>{author_email.error}</small>}
+                    {author_email.touched && author_email.error && <small className="text-danger">{author_email.error}</small>}
                 </fieldset>
                 <fieldset className={'form-group' + (content.touched && content.error ? ' has-error' : '')}>
                     <textarea placeholder="Your comment" className="form-control" {...content}
                               value={content.value || ''}/>
-                    {content.touched && content.error && <small>{content.error}</small>}
+                    {content.touched && content.error && <small className="text-danger">{content.error}</small>}
                 </fieldset>
                 <div>
                     <button className="btn btn-primary" disabled={submitting} onClick={handleSubmit}>
                         {submitting ? <i/> : <i className="fa fa-paper-plane" />} Submit
                     </button>
-                    &nbsp;
+                    {" "}
                     <button className="btn btn-default" disabled={submitting} onClick={resetForm}>
                         Clear Values
                     </button>

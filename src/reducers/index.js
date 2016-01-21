@@ -5,6 +5,7 @@ import page from './page';
 import posts from './posts';
 import post from './post';
 import comment from './comment';
+import comments from './comments';
 // TODO: try to import * from './' instead of importing individual reducers
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
     post,
     posts,
     comment,
+    comments,
     form: formReducer
 });
 

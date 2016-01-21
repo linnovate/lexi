@@ -27,7 +27,7 @@ export default class PageContainer extends Component {
         if (!page)
             return (<div></div>);
         else if (page.isFetching)
-            return (<Spinner spinnerName='three-bounce' noFadeIn style={{position: 'fixed', top: '50%', left: '40%'}} />);
+            return (<Spinner spinnerName='three-bounce' style={{position: 'fixed', top: '50%', left: '40%'}} />);
         else if(page.error)
             return (<PageNotFound />);
         else

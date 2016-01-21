@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import {reset} from 'redux-form';
 import { WP_API_URL } from '../wp-data';
+export * from './comments'
 
 export const REQUEST_PAGE = 'REQUEST_PAGE';
 export const RECEIVE_PAGE = 'RECEIVE_PAGE';
