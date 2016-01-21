@@ -1,4 +1,5 @@
 node_modules
-dist
+dist/bundle.js.map
+dist/style.css.map
 npm-debug.log
 src/wp-url.js
