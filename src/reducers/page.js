@@ -1,6 +1,4 @@
-import { RECEIVE_PAGE, REQUEST_PAGE } from '../actions/index';
-
-export const DEFAULT_PAGE = 'defaultPage';
+import { RECEIVE_PAGE, REQUEST_PAGE, REQUEST_PAGE_FAILED } from '../actions';
 
 let defaultState = {};
 
@@ -10,6 +8,11 @@ export default function page(state = defaultState, action) {
 
         case REQUEST_PAGE:
             return Object.assign({}, state, {[action.payload.pageName]: {isFetching: true}});
+
+        case REQUEST_PAGE_FAILED:
+            return Object.assign({}, state, {
+                [action.payload.pageName]: {isFetching: false, error: action.payload.error}
+            });
 
         case RECEIVE_PAGE:
             const { pageName, page } = action.payload;

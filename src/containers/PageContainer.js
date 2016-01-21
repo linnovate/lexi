@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { fetchPageIfNeeded } from '../actions';
 import { bindActionCreators } from 'redux';
 import Spinner from 'react-spinkit';
+import Alert from '../components/Alert';
 
 @connect (state =>({pages: state.page}), {fetchPageIfNeeded})
 
@@ -29,7 +30,7 @@ export default class PageContainer extends Component {
         else if (page.isFetching)
             return (<Spinner spinnerName='three-bounce' style={{position: 'fixed', top: '50%', left: '40%'}} />);
         else if(page.error)
-            return (<PageNotFound />);
+            return (<Alert type="danger" message={page.error.message} dismissible={false}/>)
         else
             return (<Page page={page}/>);
     }

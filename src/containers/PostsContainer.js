@@ -3,14 +3,10 @@ import { connect } from 'react-redux';
 import { fetchPosts } from '../actions';
 import { Link } from 'react-router';
 import Post from '../components/Post';
+import Alert from '../components/Alert';
 import Spinner from 'react-spinkit';
 
-@connect (state => ({
-    posts: state.posts.posts,
-    pageNum: state.posts.pageNum,
-    isFetching: state.posts.isFetching,
-    totalPages: state.posts.totalPages
-}), {fetchPosts})
+@connect (state => ({...state.posts}), {fetchPosts})
 
 // Smart component
 export default class PostsContainer extends Component {
@@ -82,7 +78,10 @@ export default class PostsContainer extends Component {
     }
 
     render() {
-        const { posts, totalPages, isFetching, pageNum = 1 } = this.props;
+        const { error, posts, totalPages, isFetching, pageNum = 1 } = this.props;
+        if (error) {
+            return (<Alert type="danger" message={error.message} dismissible={false}/>)
+        }
         return (
             isFetching
                 ? <Spinner spinnerName='three-bounce' style={{position: 'fixed', top: '50%', left: '40%'}}/>
