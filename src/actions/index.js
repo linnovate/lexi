@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import {reset} from 'redux-form';
 import { WP_API_URL } from '../wp-data';
 
 export const REQUEST_PAGE = 'REQUEST_PAGE';
@@ -19,18 +20,19 @@ function commentAddRequest(comment) {
         type: COMMENT_ADD_REQUEST,
         payload: {
             comment: comment,
-            isFetching: true
+            isFetching: true,
+            error: null
         }
     }
 }
 
 function commentAddSuccess(comment) {
-    alert("ok");
     return {
         type: COMMENT_ADD_SUCCESS,
         payload: {
             comment: comment,
-            isFetching: false
+            isFetching: false,
+            error: null
         }
     }
 }
@@ -143,10 +145,12 @@ export function addComment(commentData) {
         dispatch(commentAddRequest(commentData));
         return fetch(WP_API_URL + '/comments',{
             method: 'POST',
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify(commentData)
         })
             .then(response => response.json())
             .then(comment => dispatch(commentAddSuccess(comment)))
+            .then(() => dispatch(reset('comment')))
             .catch(error => {
                 const response = error.response;
                 if (response === undefined) {

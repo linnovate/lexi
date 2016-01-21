@@ -1,22 +1,22 @@
 import React, {Component, PropTypes} from 'react';
 import {reduxForm} from 'redux-form';
-export const fields = ['comment_author', 'comment_author_email', 'comment_content', 'comment_post_ID'];
+export const fields = ['author_name', 'author_email', 'content'];
 
 
 const validate = values => {
     const errors = {};
-    if (!values.comment_author) {
-        errors.comment_author = 'Required';
+    if (!values.author_name) {
+        errors.author_name = 'Required';
     }
-    if (!values.comment_author_email) {
-        errors.comment_author_email = 'Required';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.comment_author_email)) {
-        errors.comment_author_email = 'Invalid email address';
+    if (!values.author_email) {
+        errors.author_email = 'Required';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.author_email)) {
+        errors.author_email = 'Invalid email address';
     }
-    if (!values.comment_content) {
-        errors.comment_content = 'Required';
-    } else if (values.comment_content.length < 5) {
-        errors.comment_content = 'Comment too short';
+    if (!values.content) {
+        errors.content = 'Required';
+    } else if (values.content.length < 5) {
+        errors.content = 'Comment too short';
     }
     return errors;
 };
@@ -32,33 +32,32 @@ export default class CommentForm extends Component {
         fields: PropTypes.object.isRequired,
         handleSubmit: PropTypes.func.isRequired,
         resetForm: PropTypes.func.isRequired,
-        submitting: PropTypes.bool.isRequired,
-        dirty: PropTypes.bool.isRequired
+        submitting: PropTypes.bool.isRequired
     };
 
     render() {
         const {
-            fields: {comment_post_ID, comment_author, comment_author_email, comment_content},
+            fields: {author_name, author_email, content},
             handleSubmit,
             resetForm,
-            submitting,
+            submitting
             } = this.props;
 
         return (
             <form onSubmit={handleSubmit}>
-                <fieldset className={'form-group' + (comment_author.touched && comment_author.error ? ' has-error' : '')}>
-                    <input required className="form-control" type="text" placeholder="First Name" {...comment_author}/>
-                    {comment_author.touched && comment_author.error && <div className="">{comment_author.error}</div>}
+                <fieldset className={'form-group' + (author_name.touched && author_name.error ? ' has-error' : '')}>
+                    <input required className="form-control" type="text" placeholder="First Name" {...author_name}/>
+                    {author_name.touched && author_name.error && <small>{author_name.error}</small>}
                 </fieldset>
-                <fieldset className={'form-group' + (comment_author_email.touched && comment_author_email.error ? ' has-error' : '')}>
+                <fieldset className={'form-group' + (author_email.touched && author_email.error ? ' has-error' : '')}>
                     <input required className="form-control" type="email"
-                           placeholder="Email" {...comment_author_email}/>
-                    {comment_author_email.touched && comment_author_email.error && <div className="">{comment_author_email.error}</div>}
+                           placeholder="Email" {...author_email}/>
+                    {author_email.touched && author_email.error && <small>{author_email.error}</small>}
                 </fieldset>
-                <fieldset className={'form-group' + (comment_content.touched && comment_content.error ? ' has-error' : '')}>
-                    <textarea placeholder="Your comment" className="form-control" {...comment_content}
-                              value={comment_content.value || ''}/>
-                    {comment_content.touched && comment_content.error && <div className="">{comment_content.error}</div>}
+                <fieldset className={'form-group' + (content.touched && content.error ? ' has-error' : '')}>
+                    <textarea placeholder="Your comment" className="form-control" {...content}
+                              value={content.value || ''}/>
+                    {content.touched && content.error && <small>{content.error}</small>}
                 </fieldset>
                 <div>
                     <button className="btn btn-primary" disabled={submitting} onClick={handleSubmit}>
