@@ -130,20 +130,7 @@ export function fetchPageIfNeeded(pageName) {
                 .then(response => response.json())
                 .then(checkResponseEmpty)
                 .then(pages => dispatch(receivePage(pageName, pages[0])))
-                .catch(error => {
-                    const response = error.response;
-                    if (response === undefined) {
-                        dispatch(requestPageFailed(pageName, error));
-                    } else {
-                        response.json()
-                            .then(json => {
-                                error.status = response.status;
-                                error.statusText = response.statusText;
-                                error.message = json.message;
-                                dispatch(requestPageFailed(pageName, error));
-                            });
-                    }
-                });
+                .catch(error => dispatch(requestPageFailed(pageName, error)));
         }
     }
 }
@@ -160,20 +147,7 @@ export function fetchPosts(pageNum = 1) {
             .then(checkStatus)
             .then(response => Promise.all([response.headers.get('X-WP-TotalPages'), response.json()]))
             .then(postsData => dispatch(receivePosts(pageNum, postsData[0], postsData[1])))
-            .catch(error => {
-                const response = error.response;
-                if (response === undefined) {
-                    dispatch(requestPostsFailed(pageNum, error));
-                } else {
-                    response.json()
-                        .then(json => {
-                            error.status = response.status;
-                            error.statusText = response.statusText;
-                            error.message = json.message;
-                            dispatch(requestPostsFailed(pageNum, error));
-                        });
-                }
-            });
+            .catch(error => dispatch(requestPostsFailed(pageNum, error)));
     }
 }
 
@@ -199,20 +173,7 @@ export function addComment(commentData) {
             .then(response => response.json())
             .then(comment => dispatch(commentAddSuccess(comment)))
             .then(() => dispatch(reset('comment')))
-            .catch(error => {
-                const response = error.response;
-                if (response === undefined) {
-                    dispatch(commentAddFailed(commentData, error));
-                } else {
-                    response.json()
-                        .then(json => {
-                            error.status = response.status;
-                            error.statusText = response.statusText;
-                            error.message = json.message;
-                            dispatch(commentAddFailed(commentData, error));
-                        });
-                }
-            });
+            .catch(error => dispatch(commentAddFailed(commentData, error)));
     }
 }
 

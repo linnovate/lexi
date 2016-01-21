@@ -47,19 +47,6 @@ export default function fetchComments(postId) {
             .then(response => response.json())
             .then(commentsData =>
                 dispatch(commentsGetSuccess(postId, commentsData))
-            ).catch(error => {
-                const response = error.response;
-                if (response === undefined) {
-                    dispatch(commentsGetFailed(postId, error));
-                } else {
-                    response.json()
-                        .then(json => {
-                            error.status = response.status;
-                            error.statusText = response.statusText;
-                            error.message = json.message;
-                            dispatch(commentsGetFailed(postId, error));
-                        });
-                }
-            });
+            ).catch(error => dispatch(commentsGetFailed(postId, error)));
     }
 }
