@@ -177,7 +177,7 @@ export function addComment(commentData) {
     }
 }
 
-function checkStatus(response) {
+export function checkStatus(response) {
     console.log("Status: " + response.status);
     if (response.status >= 200 && response.status < 300) {
         return response

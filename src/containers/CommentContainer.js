@@ -17,7 +17,7 @@ export default class CommentContainer extends Component {
             this.alert = null;
         } else {
             this.alert = {
-                message: nextProps.error ? 'Error!' : 'Comment added',
+                message: nextProps.error ? nextProps.error.message : 'Comment added',
                 type: nextProps.error ? 'danger' : 'success'
             }
         }
