@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ABOUT_BLOCK_CONTENT } from '../wp-data';
+import { BlogData } from '../wp-data';
 
 export default class Sidebar extends Component {
     render() {
@@ -7,7 +7,7 @@ export default class Sidebar extends Component {
             <div className="col-sm-3 col-sm-offset-1 blog-sidebar">
                 <div className="sidebar-module sidebar-module-inset">
                     <h4>About</h4>
-                    {ABOUT_BLOCK_CONTENT}
+                    {BlogData.aboutContent}
                 </div>
                 <div className="sidebar-module">
                     <h4>Archives</h4>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { WP_BLOG_NAME, WP_BLOG_DESCRIPTION } from '../wp-data';
+import { BlogData } from '../wp-data';
 
 export default class Header extends Component {
 
@@ -7,8 +7,8 @@ export default class Header extends Component {
         return (
             <div className="blog-header">
                 <div className="container">
-                    <h1 className="blog-title">{WP_BLOG_NAME}</h1>
-                    <p className="lead blog-description">{WP_BLOG_DESCRIPTION}</p>
+                    <h1 className="blog-title">{BlogData.blogName}</h1>
+                    <p className="lead blog-description">{BlogData.blogDescription}</p>
                 </div>
             </div>
         );

@@ -30,3 +30,24 @@ function lexi_customize_register( $wp_customize ) {
 
 }
 
+define('THEME_PRIMARY_MENU_NAME', 'primary');
+
+add_action( 'after_setup_theme', function() {
+    register_nav_menu( THEME_PRIMARY_MENU_NAME, __( 'Primary Menu') );
+});
+
+
+function get_theme_menu_data($name) {
+    $menu_data = false;
+    if (($locations = get_nav_menu_locations()) && isset($locations[$name])) {
+        $menu = wp_get_nav_menu_object($locations[$name]);
+        $menu_items = wp_get_nav_menu_items($menu->term_id);
+        $base_url = site_url();
+        if ($menu_items) {
+            $menu_data = array_map(function ($val) use ($base_url) {
+                return ['url' => preg_replace("~^$base_url~", "", $val->url) ?: '/', 'title' => $val->title];
+            }, $menu_items);
+        }
+    }
+    return $menu_data;
+}

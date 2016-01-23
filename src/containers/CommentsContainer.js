@@ -40,7 +40,6 @@ export default class CommentsContainer extends Component {
     }
 
     render() {
-        console.log(this.props);
         const { currentPostId, comments, isFetching } = this.props;
         if (!currentPostId) {
             return null
